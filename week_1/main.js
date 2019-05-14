@@ -6,6 +6,9 @@ var path = require('path');
 var server = http.createServer((req,res)=>{
     var pathname = url.parse(req.url).pathname;
     var extname = path.extname(pathname);
+    if(pathname === '/favicon.ico'){
+        return;
+    }
     if(pathname === '/'){
         fs.readFile('./index.html',(err,data)=>{
             res.writeHead(200,{'Content-type':'text/html;charset=UTF-8'});
@@ -26,6 +29,15 @@ var server = http.createServer((req,res)=>{
             res.end(data);
         });
     })
+
+    // fs.readFile(__dirname+'/menu.txt',(err,data)=>{
+    //     if(err) throw err;
+    //     console.log(data.toString());
+    // })
+    fs.rename('./1.txt','./menu.txt',(err)=>{
+        if(err) throw err;
+        console.log('重命名成功')
+    });
 })
 
 server.listen(3000,'192.168.1.143');

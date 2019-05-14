@@ -9,3 +9,16 @@
 # Node.js 和别的老牌 3p 不一样：
     1）没有自己的语法，依赖 V8 引擎，所以就是 JS。V8 引擎解析 JS 的，效率非常高，并且 V8 中很多东西都是异步的。Node 就是将 V8 中的一些功能自己没有重写，移植到服务器上。
     2）没有 web 容器，就是安装配置完成之后，没有一个根目录（没有根目录的概念）。
+
+# require()中的路径，是从当前这个 js 文件触发，找别的文件。
+# require 一个文件的时候会执行那个文件
+    所以，桌面上有一个 a.js，test 文件夹中有 b.js、c.js、menu.txt
+    a 要引用 b：
+    var b = require('./test/b.js);
+
+    但是，fs 等其他的模块用到路径的时候，都是相对于 cmd 命令光标所在位置。
+    所以，在 b.js 中想读 menu.txt 这个文件，推荐用绝对路径（__dirname）：
+    fs.readFile(__dirname+'/menu.txt',(err,data)=>{
+        if(err) throw err;
+        console.log(data.toString());
+    })
